@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="style.css">
+   <link rel="preconnect" href="https://fonts.gstatic.com">
+   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100;300;400;700;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <!--Bottom font is for the number of hidden items text-->
+   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+   <script src="https://kit.fontawesome.com/de36116a80.js" crossorigin="anonymous"></script>
+   <link rel="icon" href="favicon.png">
+   <title>Gloomhaven Item Tracker</title>
+</head>
+<body>
+
+   <!-- <div class="notification">
+      <div class="icon"><i class="fas fa-bell"></i></div>
+      <h2 class="notification-description">Your purchased an Item</h2>
+      <button class="close-button"><i class="fas fa-times"></i></button>
+   </div> -->
+   
+   <div class="shown-items">
+      <div class="title-container">
+         <h1 class="title">Gloomhaven Item Tracker</h1>
+   
+         <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Search items...." onkeyup="checkSearchBar()">
+
+            <div class="search-icon">
+               <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+         </div>
+      </div>
+      
+      <div class="item-menu-container">
+         <div class="items-menu">
+            <button class = "filter-button" id = "All">All</button>
+            <button class = "filter-button" id = "Headgear">Headgear</button>
+            <button class = "filter-button" id = "Armor">Armor</button>
+            <button class = "filter-button" id = "Two-Hand">Two-Hand</button>
+            <button class = "filter-button" id = "One-Hand">One-Hand</button> 
+            <button class = "filter-button" id = "Foot">Footgear</button>
+            <button class = "filter-button" id = "Purse">Purse</button>
+         </div>
+
+         <div class="items-wrapper"></div>
+      </div>
+   </div>
+   
+   <script src="main.js"></script>
+</body>
+</html>
