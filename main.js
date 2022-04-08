@@ -163,14 +163,18 @@ const shownItems = document.querySelector(".shown-items");
 function sort() {
    sortedItemObjects = [];
 
+   // i is the cost. And because item cost go up by 5 at max 80 the for loop is like below
    for (i = 0; i <= 80; i += 5) {
+      // Searches through each item
       itemObjects.forEach(itemObject => {
+         // compares cost then if equal puts it into sorted Item Objects sorted least to greatest.
          if (itemObject.Cost == i) {
             sortedItemObjects.push(itemObject);
          }
       });
    }
 
+   // Makes itemObjects array sortedItemObjects
    itemObjects = sortedItemObjects;
 }
 
@@ -184,93 +188,114 @@ function generateItems() {
    }
 
    itemObjects.forEach(itemObject => {
+      // Gets saved quantity from localStorage (ex. savedQuantity5 2)
       let savedQuantity = localStorage.getItem(`savedQuantity${itemObject.indexNumber}`, itemObject.Quantity);
 
+      // Checks if there is a saved quantity (There is not if first time opening page), and if not saves the quantity of all the items
       if (savedQuantity == null) {
          localStorage.setItem(`savedQuantity${itemObject.indexNumber}`, itemObject.Quantity);
       }
 
+      // Creates itemCardElement
       const itemCard = document.createElement("div");
       itemCard.classList.add("item-card");
       itemCard.id = itemObject.Name;
       itemCard.classList.add(itemObject.Type);
       itemCard.classList.add(itemObject.indexNumber);
 
+      // Creates itemImage
       const itemImage = document.createElement("img");
       itemImage.classList.add("item-image");
       itemImage.src = `card-images/${itemObject.Type}/${itemObject.src}`;
       itemImage.classList.add(itemObject.indexNumber);
 
+      // Div for buttons and description
       const itemInfoSection = document.createElement("div");
       itemInfoSection.classList.add("item-info-section");
       itemCard.classList.add(itemObject.indexNumber);
 
+      // Creates cost text element
       const itemCost = document.createElement("h2");
       itemCost.textContent = `Cost: ${itemObject.Cost}`;
       itemCost.classList.add("item-text");
       itemCost.classList.add(".item-cost");
       itemCost.classList.add(itemObject.indexNumber);
 
+      // Creates item name element
       const itemName = document.createElement("h2");
       itemName.textContent = `Name: ${itemObject.Name}`;
       itemName.classList.add("item-text");
       itemName.classList.add("item-name");
       itemName.classList.add(itemObject.indexNumber);
 
+      // Creates item type element
       const itemType = document.createElement("h2");
       itemType.textContent = `Type: ${itemObject.Type}`;
       itemType.classList.add("item-text");
       itemType.classList.add("item-type");
       itemType.classList.add(itemObject.indexNumber);
 
+      // Creates item quantity element
       const itemQuantity = document.createElement("h2");
       itemQuantity.classList.add("item-text");
       itemQuantity.classList.add("quantity-number-text");
       itemQuantity.classList.add(itemObject.indexNumber);
 
+      // Gets saved quantity. If first time opening page does default quantity of item
       savedQuantity = localStorage.getItem(`savedQuantity${itemObject.indexNumber}`);
 
+      // Sets quantity of item
       itemQuantity.textContent = `Quantity: ${savedQuantity}`;
 
+      // Max Quantity setting
       const itemMaxQuantity = itemObject.Quantity;
       itemQuantity.id = itemMaxQuantity;
 
+      // Description of the item (What it does)
       const itemDescription = document.createElement("h2");
       itemDescription.textContent = `Description: ${itemObject.Description} `;
       itemDescription.classList.add("item-text");
       itemDescription.classList.add("item-description");
       itemDescription.classList.add(itemObject.indexNumber);
 
+      // Div that contains buttonzs
       const itemButtons = document.createElement("div");
       itemButtons.classList.add("item-buttons");
       itemButtons.classList.add(itemObject.indexNumber);
 
+      // Purchase button
       const purchaseButton = document.createElement("button");
       purchaseButton.classList.add("purchase-button");
       purchaseButton.textContent = "Purchase";
       purchaseButton.classList.add(itemObject.indexNumber);
 
+      //Sell button
       const sellButton = document.createElement("button");
       sellButton.classList.add("sell-button");
       sellButton.textContent = "Sell Item";
       sellButton.classList.add(itemObject.indexNumber);
 
+      // Checks in the beggining whether the savedQuantity is equal to 0. If so, make purchase button not clickable
       if (savedQuantity == 0) {
          purchaseButton.classList.add("not-active");
       }
 
+      // Checks if there is the max amount of items. If so, makes it so that sell button is not clickable
       else if (savedQuantity == itemObject.Quantity) {
          sellButton.classList.add("not-active");
       }
 
+      // Else make both active
       else {
          purchaseButton.classList.remove("not-active");
          sellButton.classList.remove("not-active");
       }
 
+      // Add click event to buttons for purchase and sell
       purchaseButton.addEventListener("click", handleItemActionButtons);
       sellButton.addEventListener("click", handleItemActionButtons);
 
+      // Adds elements together to form item card
       itemButtons.appendChild(purchaseButton);
       itemButtons.appendChild(sellButton);
 
@@ -285,12 +310,14 @@ function generateItems() {
       itemCard.appendChild(itemInfoSection);
       itemsWrapper.appendChild(itemCard);
 
+      // Adds item card element to array of cards
       itemCardArray.push(itemCard);
    });
 }
 
 generateItems();
 
+// Search bar function
 function checkSearchBar() {
    const searchBarInput = document.querySelector(".search-bar input");
    const filter = searchBarInput.value.toUpperCase();
@@ -309,8 +336,12 @@ function checkSearchBar() {
    }
 }
 
+
+// Filter function
 filterButtons.forEach(filterButton => {
+   //Checks if filter button was clicked
    filterButton.addEventListener("click", () => {
+      // If filterButton of all was clicked show every card
       if (filterButton.id == "All") {
          itemCardArray.forEach(itemCard => {
             itemCard.style.display = "flex";
@@ -319,12 +350,15 @@ filterButtons.forEach(filterButton => {
       }
 
       else {
+         // Loops through each itemCard
          itemCardArray.forEach(itemCard => {
+            // If itemCard type is equal to filterButtons type then it shows it
             if (itemCard.classList[1] == filterButton.id) {
                itemCard.style.display = "flex";
                //! Important: Don't switch to display block. Will ruin item flexbox style
             }
 
+            // Else you hide it
             else {
                itemCard.style.display = "none";
             }
@@ -334,20 +368,32 @@ filterButtons.forEach(filterButton => {
 });
 
 function handleItemActionButtons(e) {
+   // E is the button clicked
+
+   // Checks if button is a purchase button
    if (e.target.classList.contains("purchase-button")) {
+      // Loops through each item
       itemObjects.forEach(itemObject => {
+         // Gets the savedQuantity in loccalStorage by using the indexNumber of the item
          let savedQuantity = localStorage.getItem(`savedQuantity${itemObject.indexNumber}`);
 
+         // Checks if the buttons index and items index are the same
          if (itemObject.indexNumber == e.target.classList[buttonIndexNumberIndex]) {
+            // Gets all quantity text
             const quantityTexts = document.querySelectorAll(".quantity-number-text");
 
+            // Loops through each text element
             quantityTexts.forEach(quantityText => {
+               // If the index of the text element and index of the button are the same
                if (quantityText.classList[itemCardTextElementsClassIndexNumberIndex] == e.target.classList[buttonIndexNumberIndex]) {
+                  // Checks If there is an item to purchase. If so, then purchases and changes savedQuantity by subtracting 1
                   if (savedQuantity > 0) {
                      savedQuantity -= 1;
 
+                     // Uptates quantity texts textContent
                      quantityText.textContent = `Quantity: ${savedQuantity}`;
 
+                     // Updates local storage savedQuantity
                      localStorage.setItem(`savedQuantity${itemObject.indexNumber}`, savedQuantity);
                   }
                }
@@ -356,20 +402,30 @@ function handleItemActionButtons(e) {
       });
    }
 
+   // Checks if buttion is a sell button
    else if (e.target.classList.contains("sell-button")) {
+      // Loops through each item
       itemObjects.forEach(itemObject => {
+         // Gets the savedQuantity
          let savedQuantity = localStorage.getItem(`savedQuantity${itemObject.indexNumber}`);
 
+         // Checks if the butons index and items index are the same
          if (itemObject.indexNumber == e.target.classList[buttonIndexNumberIndex]) {
+            // Get all the quantity text
             const quantityTexts = document.querySelectorAll(".quantity-number-text");
 
+            // Loops thourgh each text element
             quantityTexts.forEach(quantityText => {
+               // If the index of the text element and index of the button are the same
                if (quantityText.classList[itemCardTextElementsClassIndexNumberIndex] == e.target.classList[buttonIndexNumberIndex]) {
+                  // Checks if savedQuantity is less than maxQuantity. If so, change the savedQuantity by adding 1
                   if (parseInt(savedQuantity) < itemObject.Quantity) {
                      savedQuantity = parseInt(savedQuantity) + 1;
 
+                     // Updates quanty texts textContent
                      quantityText.textContent = `Quantity: ${parseInt(savedQuantity)}`;
 
+                     // Updates local storage savedQuantity
                      localStorage.setItem(`savedQuantity${itemObject.indexNumber}`, parseInt(savedQuantity));
                   }
                }
